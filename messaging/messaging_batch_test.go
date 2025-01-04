@@ -210,7 +210,7 @@ func TestSendEachInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: local validation error: message must not be nil"
+	want := "local validation error: invalid message at index 0: local validation error: message must not be nil"
 	br, err := client.SendEach(ctx, []*Message{nil})
 	if err == nil || err.Error() != want {
 		t.Errorf("SendEach() = (%v, %v); want = (nil, %q)", br, err, want)
@@ -421,7 +421,7 @@ func TestSendEachForMulticastInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: local validation error: priority must be 'normal' or 'high'"
+	want := "local validation error: invalid message at index 0: local validation error: priority must be 'normal' or 'high'"
 	mm := &MulticastMessage{
 		Tokens: []string{"token1"},
 		Android: &AndroidConfig{

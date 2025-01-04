@@ -169,7 +169,7 @@ func (c *fcmClient) sendEachInBatch(ctx context.Context, messages []*Message, dr
 
 	for idx, m := range messages {
 		if err := validateMessage(m); err != nil {
-			return nil, fmt.Errorf("invalid message at index %d: %v", idx, err)
+			return nil, fmt.Errorf("%w: invalid message at index %d: %v", ErrLocalValidation, idx, err)
 		}
 		wg.Add(1)
 		go func(idx int, m *Message, dryRun bool, responses []*SendResponse) {
