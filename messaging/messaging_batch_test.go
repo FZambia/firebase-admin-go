@@ -172,7 +172,7 @@ func TestSendEachEmptyArray(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "messages must not be nil or empty"
+	want := "local validation error: messages must not be nil or empty"
 	br, err := client.SendEach(ctx, nil)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendEach(nil) = (%v, %v); want = (nil, %q)", br, err, want)
@@ -196,7 +196,7 @@ func TestSendEachTooManyMessages(t *testing.T) {
 		messages = append(messages, &Message{Topic: "test-topic"})
 	}
 
-	want := "messages must not contain more than 500 elements"
+	want := "local validation error: messages must not contain more than 500 elements"
 	br, err := client.SendEach(ctx, messages)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendEach() = (%v, %v); want = (nil, %q)", br, err, want)
@@ -210,7 +210,7 @@ func TestSendEachInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: message must not be nil"
+	want := "invalid message at index 0: local validation error: message must not be nil"
 	br, err := client.SendEach(ctx, []*Message{nil})
 	if err == nil || err.Error() != want {
 		t.Errorf("SendEach() = (%v, %v); want = (nil, %q)", br, err, want)
@@ -358,7 +358,7 @@ func TestSendEachForMulticastNil(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "message must not be nil"
+	want := "local validation error: message must not be nil"
 	br, err := client.SendEachForMulticast(ctx, nil)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendEachForMulticast(nil) = (%v, %v); want = (nil, %q)", br, err, want)
@@ -377,7 +377,7 @@ func TestSendEachForMulticastEmptyArray(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "tokens must not be nil or empty"
+	want := "local validation error: tokens must not be nil or empty"
 	mm := &MulticastMessage{}
 	br, err := client.SendEachForMulticast(ctx, mm)
 	if err == nil || err.Error() != want {
@@ -406,7 +406,7 @@ func TestSendEachForMulticastTooManyTokens(t *testing.T) {
 		tokens = append(tokens, fmt.Sprintf("token%d", i))
 	}
 
-	want := "tokens must not contain more than 500 elements"
+	want := "local validation error: tokens must not contain more than 500 elements"
 	mm := &MulticastMessage{Tokens: tokens}
 	br, err := client.SendEachForMulticast(ctx, mm)
 	if err == nil || err.Error() != want {
@@ -421,7 +421,7 @@ func TestSendEachForMulticastInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: priority must be 'normal' or 'high'"
+	want := "invalid message at index 0: local validation error: priority must be 'normal' or 'high'"
 	mm := &MulticastMessage{
 		Tokens: []string{"token1"},
 		Android: &AndroidConfig{
@@ -578,7 +578,7 @@ func TestSendAllEmptyArray(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "messages must not be nil or empty"
+	want := "local validation error: messages must not be nil or empty"
 	br, err := client.SendAll(ctx, nil)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendAll(nil) = (%v, %v); want = (nil, %q)", br, err, want)
@@ -602,7 +602,7 @@ func TestSendAllTooManyMessages(t *testing.T) {
 		messages = append(messages, &Message{Topic: "test-topic"})
 	}
 
-	want := "messages must not contain more than 500 elements"
+	want := "local validation error: messages must not contain more than 500 elements"
 	br, err := client.SendAll(ctx, messages)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendAll() = (%v, %v); want = (nil, %q)", br, err, want)
@@ -616,7 +616,7 @@ func TestSendAllInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: message must not be nil"
+	want := "local validation error: invalid message at index 0: local validation error: message must not be nil"
 	br, err := client.SendAll(ctx, []*Message{nil})
 	if err == nil || err.Error() != want {
 		t.Errorf("SendAll() = (%v, %v); want = (nil, %q)", br, err, want)
@@ -822,7 +822,7 @@ func TestSendMulticastNil(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "message must not be nil"
+	want := "local validation error: message must not be nil"
 	br, err := client.SendMulticast(ctx, nil)
 	if err == nil || err.Error() != want {
 		t.Errorf("SendMulticast(nil) = (%v, %v); want = (nil, %q)", br, err, want)
@@ -841,7 +841,7 @@ func TestSendMulticastEmptyArray(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "tokens must not be nil or empty"
+	want := "local validation error: tokens must not be nil or empty"
 	mm := &MulticastMessage{}
 	br, err := client.SendMulticast(ctx, mm)
 	if err == nil || err.Error() != want {
@@ -870,7 +870,7 @@ func TestSendMulticastTooManyTokens(t *testing.T) {
 		tokens = append(tokens, fmt.Sprintf("token%d", i))
 	}
 
-	want := "tokens must not contain more than 500 elements"
+	want := "local validation error: tokens must not contain more than 500 elements"
 	mm := &MulticastMessage{Tokens: tokens}
 	br, err := client.SendMulticast(ctx, mm)
 	if err == nil || err.Error() != want {
@@ -885,7 +885,7 @@ func TestSendMulticastInvalidMessage(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := "invalid message at index 0: priority must be 'normal' or 'high'"
+	want := "local validation error: invalid message at index 0: local validation error: priority must be 'normal' or 'high'"
 	mm := &MulticastMessage{
 		Tokens: []string{"token1"},
 		Android: &AndroidConfig{

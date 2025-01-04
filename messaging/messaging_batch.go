@@ -19,7 +19,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -52,10 +51,10 @@ type MulticastMessage struct {
 
 func (mm *MulticastMessage) toMessages() ([]*Message, error) {
 	if len(mm.Tokens) == 0 {
-		return nil, errors.New("tokens must not be nil or empty")
+		return nil, fmt.Errorf("%w: tokens must not be nil or empty", ErrLocalValidation)
 	}
 	if len(mm.Tokens) > maxMessages {
-		return nil, fmt.Errorf("tokens must not contain more than %d elements", maxMessages)
+		return nil, fmt.Errorf("%w: tokens must not contain more than %d elements", ErrLocalValidation, maxMessages)
 	}
 
 	var messages []*Message
@@ -158,11 +157,11 @@ func (c *fcmClient) SendEachForMulticastDryRun(ctx context.Context, message *Mul
 
 func (c *fcmClient) sendEachInBatch(ctx context.Context, messages []*Message, dryRun bool) (*BatchResponse, error) {
 	if len(messages) == 0 {
-		return nil, errors.New("messages must not be nil or empty")
+		return nil, fmt.Errorf("%w: messages must not be nil or empty", ErrLocalValidation)
 	}
 
 	if len(messages) > maxMessages {
-		return nil, fmt.Errorf("messages must not contain more than %d elements", maxMessages)
+		return nil, fmt.Errorf("%w: messages must not contain more than %d elements", ErrLocalValidation, maxMessages)
 	}
 
 	var responses []*SendResponse = make([]*SendResponse, len(messages))
@@ -286,7 +285,7 @@ func (c *fcmClient) SendMulticastDryRun(ctx context.Context, message *MulticastM
 
 func toMessages(message *MulticastMessage) ([]*Message, error) {
 	if message == nil {
-		return nil, errors.New("message must not be nil")
+		return nil, fmt.Errorf("%w: message must not be nil", ErrLocalValidation)
 	}
 
 	return message.toMessages()
@@ -296,11 +295,11 @@ func (c *fcmClient) sendBatch(
 	ctx context.Context, messages []*Message, dryRun bool) (*BatchResponse, error) {
 
 	if len(messages) == 0 {
-		return nil, errors.New("messages must not be nil or empty")
+		return nil, fmt.Errorf("%w: messages must not be nil or empty", ErrLocalValidation)
 	}
 
 	if len(messages) > maxMessages {
-		return nil, fmt.Errorf("messages must not contain more than %d elements", maxMessages)
+		return nil, fmt.Errorf("%w: messages must not contain more than %d elements", ErrLocalValidation, maxMessages)
 	}
 
 	request, err := c.newBatchRequest(messages, dryRun)
@@ -346,7 +345,7 @@ func (c *fcmClient) newBatchRequest(messages []*Message, dryRun bool) (*internal
 	var parts []*part
 	for idx, m := range messages {
 		if err := validateMessage(m); err != nil {
-			return nil, fmt.Errorf("invalid message at index %d: %v", idx, err)
+			return nil, fmt.Errorf("%w: invalid message at index %d: %v", ErrLocalValidation, idx, err)
 		}
 
 		p := &part{

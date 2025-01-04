@@ -28,41 +28,47 @@ var (
 	colorWithAlphaPattern = regexp.MustCompile("^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$")
 )
 
+var ErrLocalValidation = errors.New("local validation error")
+
 func validateMessage(message *Message) error {
 	if message == nil {
-		return fmt.Errorf("message must not be nil")
+		return fmt.Errorf("%w: message must not be nil", ErrLocalValidation)
 	}
 
 	targets := countNonEmpty(message.Token, message.Condition, message.Topic)
 	if targets != 1 {
-		return fmt.Errorf("exactly one of token, topic or condition must be specified")
+		return fmt.Errorf("%w: exactly one of token, topic or condition must be specified", ErrLocalValidation)
 	}
 
 	// validate topic
 	if message.Topic != "" {
 		bt := strings.TrimPrefix(message.Topic, "/topics/")
 		if !bareTopicNamePattern.MatchString(bt) {
-			return fmt.Errorf("malformed topic name")
+			return fmt.Errorf("%w: malformed topic name", ErrLocalValidation)
 		}
 	}
 
 	// validate Notification
 	if err := validateNotification(message.Notification); err != nil {
-		return err
+		return fmt.Errorf("%w: %v", ErrLocalValidation, err)
 	}
 
 	// validate AndroidConfig
 	if err := validateAndroidConfig(message.Android); err != nil {
-		return err
+		return fmt.Errorf("%w: %v", ErrLocalValidation, err)
 	}
 
 	// validate WebpushConfig
 	if err := validateWebpushConfig(message.Webpush); err != nil {
-		return err
+		return fmt.Errorf("%w: %v", ErrLocalValidation, err)
 	}
 
 	// validate APNSConfig
-	return validateAPNSConfig(message.APNS)
+	if err := validateAPNSConfig(message.APNS); err != nil {
+		return fmt.Errorf("%w: %v", ErrLocalValidation, err)
+	}
+
+	return nil
 }
 
 func validateNotification(notification *Notification) error {

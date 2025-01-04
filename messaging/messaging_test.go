@@ -693,12 +693,12 @@ var invalidMessages = []struct {
 	{
 		name: "NilMessage",
 		req:  nil,
-		want: "message must not be nil",
+		want: "local validation error: message must not be nil",
 	},
 	{
 		name: "NoTargets",
 		req:  &Message{},
-		want: "exactly one of token, topic or condition must be specified",
+		want: "local validation error: exactly one of token, topic or condition must be specified",
 	},
 	{
 		name: "MultipleTargets",
@@ -706,21 +706,21 @@ var invalidMessages = []struct {
 			Token: "token",
 			Topic: "topic",
 		},
-		want: "exactly one of token, topic or condition must be specified",
+		want: "local validation error: exactly one of token, topic or condition must be specified",
 	},
 	{
 		name: "InvalidPrefixedTopicName",
 		req: &Message{
 			Topic: "/topics/",
 		},
-		want: "malformed topic name",
+		want: "local validation error: malformed topic name",
 	},
 	{
 		name: "InvalidTopicName",
 		req: &Message{
 			Topic: "foo*bar",
 		},
-		want: "malformed topic name",
+		want: "local validation error: malformed topic name",
 	},
 	{
 		name: "InvalidNotificationImage",
@@ -730,7 +730,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `invalid image URL: "image.jpg"`,
+		want: `local validation error: invalid image URL: "image.jpg"`,
 	},
 	{
 		name: "InvalidAndroidTTL",
@@ -740,7 +740,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "ttl duration must not be negative",
+		want: "local validation error: ttl duration must not be negative",
 	},
 	{
 		name: "InvalidAndroidPriority",
@@ -750,7 +750,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "priority must be 'normal' or 'high'",
+		want: "local validation error: priority must be 'normal' or 'high'",
 	},
 	{
 		name: "InvalidAndroidColor1",
@@ -762,7 +762,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "color must be in the #RRGGBB form",
+		want: "local validation error: color must be in the #RRGGBB form",
 	},
 	{
 		name: "InvalidAndroidColor2",
@@ -774,7 +774,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "color must be in the #RRGGBB form",
+		want: "local validation error: color must be in the #RRGGBB form",
 	},
 	{
 		name: "InvalidAndroidTitleLocArgs",
@@ -786,7 +786,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "titleLocKey is required when specifying titleLocArgs",
+		want: "local validation error: titleLocKey is required when specifying titleLocArgs",
 	},
 	{
 		name: "InvalidAndroidBodyLocArgs",
@@ -798,7 +798,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "bodyLocKey is required when specifying bodyLocArgs",
+		want: "local validation error: bodyLocKey is required when specifying bodyLocArgs",
 	},
 	{
 		name: "InvalidAndroidImage",
@@ -810,7 +810,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `invalid image URL: "image.jpg"`,
+		want: `local validation error: invalid image URL: "image.jpg"`,
 	},
 	{
 		name: "InvalidLightSettingsColor1",
@@ -824,7 +824,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "color must be in #RRGGBB or #RRGGBBAA form",
+		want: "local validation error: color must be in #RRGGBB or #RRGGBBAA form",
 	},
 	{
 		name: "InvalidLightSettingsColor2",
@@ -838,7 +838,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "color must be in #RRGGBB or #RRGGBBAA form",
+		want: "local validation error: color must be in #RRGGBB or #RRGGBBAA form",
 	},
 	{
 		name: "InvalidLightSettingsColor3",
@@ -852,7 +852,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "color must be in #RRGGBB or #RRGGBBAA form",
+		want: "local validation error: color must be in #RRGGBB or #RRGGBBAA form",
 	},
 	{
 		name: "InvalidLightSettingsOnDuration",
@@ -867,7 +867,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "lightOnDuration must not be negative",
+		want: "local validation error: lightOnDuration must not be negative",
 	},
 	{
 		name: "InvalidLightSettingsOffDuration",
@@ -882,7 +882,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "lightOffDuration must not be negative",
+		want: "local validation error: lightOffDuration must not be negative",
 	},
 	{
 		name: "InvalidVibrateTimings",
@@ -894,7 +894,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "vibrateTimingMillis must not be negative",
+		want: "local validation error: vibrateTimingMillis must not be negative",
 	},
 	{
 		name: "APNSMultipleAps",
@@ -911,7 +911,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `multiple specifications for the key "aps"`,
+		want: `local validation error: multiple specifications for the key "aps"`,
 	},
 	{
 		name: "APNSMultipleAlerts",
@@ -926,7 +926,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "multiple alert specifications",
+		want: "local validation error: multiple alert specifications",
 	},
 	{
 		name: "APNSMultipleFieldSpecifications",
@@ -941,7 +941,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `multiple specifications for the key "category"`,
+		want: `local validation error: multiple specifications for the key "category"`,
 	},
 	{
 		name: "InvalidAPNSTitleLocArgs",
@@ -957,7 +957,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "titleLocKey is required when specifying titleLocArgs",
+		want: "local validation error: titleLocKey is required when specifying titleLocArgs",
 	},
 	{
 		name: "InvalidAPNSSubTitleLocArgs",
@@ -973,7 +973,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "subtitleLocKey is required when specifying subtitleLocArgs",
+		want: "local validation error: subtitleLocKey is required when specifying subtitleLocArgs",
 	},
 	{
 		name: "InvalidAPNSLocArgs",
@@ -989,7 +989,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "locKey is required when specifying locArgs",
+		want: "local validation error: locKey is required when specifying locArgs",
 	},
 	{
 		name: "InvalidAPNSImage",
@@ -1001,7 +1001,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `invalid image URL: "image.jpg"`,
+		want: `local validation error: invalid image URL: "image.jpg"`,
 	},
 	{
 		name: "MultipleSoundSpecifications",
@@ -1018,7 +1018,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "multiple sound specifications",
+		want: "local validation error: multiple sound specifications",
 	},
 	{
 		name: "VolumeTooLow",
@@ -1035,7 +1035,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "critical sound volume must be in the interval [0, 1]",
+		want: "local validation error: critical sound volume must be in the interval [0, 1]",
 	},
 	{
 		name: "VolumeTooHigh",
@@ -1052,7 +1052,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "critical sound volume must be in the interval [0, 1]",
+		want: "local validation error: critical sound volume must be in the interval [0, 1]",
 	},
 	{
 		name: "InvalidWebpushNotificationDirection",
@@ -1064,7 +1064,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: "direction must be 'ltr', 'rtl' or 'auto'",
+		want: "local validation error: direction must be 'ltr', 'rtl' or 'auto'",
 	},
 	{
 		name: "WebpushNotificationMultipleFieldSpecifications",
@@ -1077,7 +1077,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `multiple specifications for the key "dir"`,
+		want: `local validation error: multiple specifications for the key "dir"`,
 	},
 	{
 		name: "InvalidWebpushFcmOptionsLink",
@@ -1090,7 +1090,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `invalid link URL: "link"`,
+		want: `local validation error: invalid link URL: "link"`,
 	},
 	{
 		name: "InvalidWebpushFcmOptionsLinkScheme",
@@ -1103,7 +1103,7 @@ var invalidMessages = []struct {
 			},
 			Topic: "topic",
 		},
-		want: `invalid link URL: "http://link.com"; want scheme: "https"`,
+		want: `local validation error: invalid link URL: "http://link.com"; want scheme: "https"`,
 	},
 }
 
